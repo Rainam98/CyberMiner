@@ -1,4 +1,4 @@
 # CyberMiner
 Team members added 
- - Rainam
- - Dhyani
+ - Rainam Shah
+ - Dhyani Gandhi
