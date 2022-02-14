@@ -4,3 +4,4 @@ Team members added
  - Dhyani Gandhi
  - Dharav Bhatt
  - Akash Karuturi
+ - Rohith Jallipalli
