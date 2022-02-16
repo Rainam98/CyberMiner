@@ -7,3 +7,4 @@ Team members added
  - Rohith Jallipalli
  - Yasaswi Devi Tiyyagura
  - Poojitha Bijjam
+ - Rutvik Avaiya
