@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-// import SuggestionItem from '../SuggestionItem'
-// import './index.css'
+import AutoCompleteItem from './autoCompleteItem'
 
 export default class  SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state ={
       searchInput: '',
+      loadAutoCompleteList: false,
     };
   }
 
   onChangeInput = (event) => {
     this.setState({
       searchInput: event.target.value,
+      loadAutoCompleteList: true,
     })
   }
 
@@ -29,14 +30,14 @@ export default class  SearchBar extends Component {
     });
   }
 
-//   onFullSuggestion = suggestion => {
-//     this.setState({searchInput: suggestion})
-//   }
+  onLoadSuggestion = suggestion => {
+    this.setState({searchInput: suggestion})
+  }
 
   render() {
-    // const filteredList = suggestionsList.filter(each =>
-    //   each.suggestion.toUpperCase().includes(searchInput.toUpperCase()),
-    // )
+    const filteredList = this.props.autoCompleteList.filter(option =>
+      option.suggestion.toUpperCase().includes(this.state.searchInput.toUpperCase()),
+    )
 
     return (
       <div className="search-bar-container">
@@ -52,16 +53,15 @@ export default class  SearchBar extends Component {
             <button className="search-btn btn btn-outline-secondary" onClick={this.onSearch}>Search</button>
           </div>
 
-
-          {/* <ul className="suggestions-list">
+          {this.state.loadAutoCompleteList && <ul className="auto-complete-list">
             {filteredList.map(each => (
-              <SuggestionItem
+              <AutoCompleteItem
                 key={each.id}
                 suggestion={each.suggestion}
-                onFullSuggestion={this.onFullSuggestion}
+                onLoadSuggestion={this.onLoadSuggestion}
               />
             ))}
-          </ul> */}
+          </ul>}
         </div>
       </div>
     )
