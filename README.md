@@ -10,18 +10,37 @@ Team members added
  - Rutvik Avaiya
  - Chenyue Li
 
+
+Steps to run Frontend code:
+1. Pull Frontend code to local using:
+    ```
+    git checkout master
+    git pull -r
+    ```
+2. Run `npm install` to install all packages locally
+3. Run `npm start` to start frontend server
+4. The homepage should load automatically after successfully running npm start, if not, enter localhost:3000 in browser url.
+5. To stop react server, use ctrl + C
+
 Steps to add/merge changes:
 1. Switch to master branch and pull the latest change from master branch using:
-    `git checkout master`
-    `git pull -r`
+    ```
+    git checkout master
+    git pull -r
+    ```
 2. Switch to your own branch and rebase from master changes so the latest changes will be sync-ed in your local branch using:
-    `git checkout <your_branch_name>`
-    `git rebase master`
+    ```
+    git checkout <your_branch_name>
+    git rebase master
+    ```
 3. Update on your local branch
 4. Upon finishing changes on your local branch, use the following command to commit the changes and push to the remote branch:
-    `git add -`
-    `git commit -m "<commit_message>"`
-    `git push --set-upstream origin <your_branch_name>`
+    ```
+    git add -
+    git commit -m "<commit_message>"
+    git push --set-upstream origin <your_branch_name>
+    ```
+
 5. Upon all changes are committed and pushed, go to the github page https://github.com/Rainam98/CyberMiner and raise pull request for code review:
     - Click on "Pull requests" tab
     - Click on "New pull request" button
