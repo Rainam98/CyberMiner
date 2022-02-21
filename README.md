@@ -10,6 +10,18 @@ Team members added
  - Rutvik Avaiya
  - Chenyue Li
 
+
+Steps to run Frontend code:
+1. Pull Frontend code to local using:
+    ```
+    git checkout master
+    git pull -r
+    ```
+2. Run `npm install` to install all packages locally
+3. Run `npm start` to start frontend server
+4. The homepage should load automatically after successfully running npm start, if not, enter localhost:3000 in browser url.
+
+
 Steps to add/merge changes:
 1. Switch to master branch and pull the latest change from master branch using:
     ```

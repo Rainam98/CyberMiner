@@ -1,0 +1,110 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.horizontal {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.output-line {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    margin-top: 1%;
+}
+
+.output-left {
+    width: 48.5%;
+    height: 300px;
+    float: left;
+    margin-left: 1%;
+}
+
+.output-right {
+    width: 48.5%;
+    height: 300px;
+    float: right;
+    margin-right: 1%;
+}
+
+.logo-image {
+    width: 1000px;
+    height: 400px;
+    margin-bottom: 15px;
+}
+
+.search-bar-container {
+    margin: auto;
+    width: 50%;
+}
+
+.input-container {
+    width: 100%;
+}
+
+.search-input {
+    width: calc(100% - 90px);
+    margin-right: 10px;
+    height: 50px;
+    padding-left: 10px;
+}
+
+.search-btn {
+    height: 50px;
+}
+
+
+/* .ui-button .ui-icon.search {
+  background-image: url(../images/search-icon.png);
+  width: 100%;
+  height: 100%;
+} */
+
+
+/* .ui-button.ui-state-hover .ui-icon.search {
+  background-image: url(../images/search-icon.png);
+  width: 100%;
+  height: 100%;
+} */
+
+.toolbar {
+    width: 100%;
+    height: 75px;
+}
