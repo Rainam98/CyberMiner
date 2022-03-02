@@ -10,7 +10,7 @@ Team members added
  - Rutvik Avaiya
  - Chenyue Li
  - Yang Yang
-
+ - Abhijeetsinh Vaghela
 
 Steps to run Frontend code:
 1. Pull Frontend code to local using:
