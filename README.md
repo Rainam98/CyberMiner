@@ -53,3 +53,15 @@ Steps to add/merge changes:
         - Backend code reviewer: Poojitha
     - Click on "Create pull request" button to submit
 6. Code reviewer will review the changes. Once approved, the pull request will be resolved and changes will be merged into master branch
+
+7. Steps to run Backend code:
+
+ - install the python runtime dependencies using
+        `pip install -r requirements.txt`
+
+ - Run the file Main.py using python3 (Virtual Environment Preferably).
+        Unix - `Python Main.py`
+        Windows - `Py Main.py`
+
+ - Open `http://127.0.0.1:5000/` in browser. 
+
