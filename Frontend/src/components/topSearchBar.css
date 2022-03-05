@@ -1,0 +1,32 @@
+#toolbar {
+  border-style: none;
+}
+
+.logo-image-small {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  float: left;
+  width: 200;
+  height: 50;
+}
+
+#inputToolbar {
+  width: 30%;
+  height: 32px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  float: left;
+}
+
+#readInputToolbar {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  float: left;
+}
+
+.horizontal {
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+}
