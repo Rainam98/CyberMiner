@@ -1,14 +1,34 @@
 import React, { Component } from 'react'
 
- class DataOutput extends Component {
+export default class DataOutput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchResults: props.searchResults,
+    };
+  }
+
   render() {
-    return (
-      <div className="">
-          <h1 className='card w-100'>DataOutput</h1>
-          <h1 className='card w-100'>DataOutput</h1>
+    const resultList = [];
+    console.log(this.state.searchResults);
+
+    if (this.state.searchResults){
+      this.state.searchResults.forEach((data) => {
+        resultList.push(
+        <div className="card result-card">
+          <div className="card-body">
+            <a href={data.url}>{data.url}</a>
+            <h1 className='data-title'>{data.title}</h1>
+            <p>{data.description}</p>
+          </div>
+        </div>
+        )
+      })
+      return (
+      <div>
+          {resultList}
       </div>
-    )
+      )
+    } 
   }
 }
-
-export default DataOutput

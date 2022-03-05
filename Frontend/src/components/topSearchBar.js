@@ -1,22 +1,48 @@
 import logo from "../logo_small.png";
 import React, { Component } from "react";
 import "./topSearchBar.css";
+import Axios from "axios";
 
 export default class TopSearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchInput: props.searchInput,
+      searchResults: null,
       loadAutoCompleteList: false,
+      loading: false
     };
   }
 
   onChangeInput = (event) => {
     this.setState({
-      searchInput: event.target.value,
-      loadAutoCompleteList: true,
+      searchInput: event.target.value
     });
   };
+
+  onSearch = () => {
+    this.setState({
+      loading: true
+    });
+    Axios({
+      method: "POST",
+      data: {
+        searchInput: this.state.searchInput,
+      },
+      url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+    }).then((res) => {
+      this.updateSearchResults(res.data["result"]) 
+      this.setState({ 
+        searchResults: res.data["result"], 
+        loading: false 
+      });
+    });
+  };
+
+  updateSearchResults=(newResults)=> {
+    this.props.updateSearchResults(newResults);
+}
+
 
   onLoadSuggestion = (suggestion) => {
     this.setState({ searchInput: suggestion });
@@ -40,9 +66,9 @@ export default class TopSearchBar extends Component {
             value={this.state.searchInput}
             onChange={this.onChangeInput}
           />
-          <button id="readInputToolbar">Search</button>
+          <button id="readInputToolbar" onClick={this.onSearch}>Search</button>
         </div>
-
+        
         {/* {this.state.loadAutoCompleteList && (
           <ul className="auto-complete-list">
             {filteredList.map((each) => (
