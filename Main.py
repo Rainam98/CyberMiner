@@ -1,23 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 import DataRetrival
 import json
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/', methods=['GET', 'POST'])
-def index(): 
-    return render_template('index.html')
+# @app.route('/', methods=['GET', 'POST'])
+# def index(): 
+#     return render_template('index.html')
 
 @app.route('/searchWord', methods=['POST'])
+@cross_origin()
 def searchWord(): 
     if request.method == 'POST':
-        words = str(request.form['search_box'].strip())#Fetch the data from search box
-        allColumnsDict = DataRetrival.getData()# All columns dict retrival from DataRetrival.py
-        allUrls = list()
-        allDesc = list()
+        posted_data = request.get_json()
+        # print(posted_data)
+        words = posted_data['searchInput']        #Fetch the data from request payload
+        allColumnsDict = DataRetrival.getData()  # All columns dict retrival from DataRetrival.py
         allData = list()
         
         for title in allColumnsDict:
-            urlDescDict = {'title':[], 'url':[], 'Description':[]}
+            urlDescDict = {'title':[], 'url':[], 'description':[]}
             if words.lower() in title.lower() or words.lower() in allColumnsDict[title][0].lower() or words.lower() in allColumnsDict[title][1].lower():
                 title1 = title.replace('Â', '').replace('\xa0', ' ')
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
@@ -25,10 +29,8 @@ def searchWord():
                 urlDescDict['url']= allColumnsDict[title][0]
                 urlDescDict['Description'] = desc
                 allData.append(urlDescDict)
-                allUrls.append(allColumnsDict[title][0])
-                allDesc.append(allColumnsDict[title][1])
-        print(allData)
-        return render_template('Results.html', data=allData)
+        # print(allData)
+        return jsonify({'result': allData})
 
 if __name__ == '__main__':
    app.run(debug=True)
