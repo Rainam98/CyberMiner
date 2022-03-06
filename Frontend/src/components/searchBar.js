@@ -3,7 +3,7 @@ import Axios from "axios";
 import AutoCompleteItem from "./autoCompleteItem";
 import TopSearchBar from "./topSearchBar";
 import logo from "../../src/logo.png";
-import DataOutput from "./dataOutput";
+
 
 export default class SearchBar extends Component {
   constructor(props) {
@@ -45,9 +45,9 @@ export default class SearchBar extends Component {
     });
   };
 
-  updateSearchResults = (newSearchResults) => {
-    this.setState({searchResults: newSearchResults});
-  }
+  // updateSearchResults = (newSearchResults) => {
+  //   this.setState({searchResults: newSearchResults});
+  // }
 
   onLoadSuggestion = (suggestion) => {
     this.setState({ searchInput: suggestion });
@@ -60,18 +60,16 @@ export default class SearchBar extends Component {
         .includes(this.state.searchInput.toUpperCase())
     );
     const isTopSearchBarLoaded = this.state.loadTopSearchBar;
-    if (isTopSearchBarLoaded) {
+    if (isTopSearchBarLoaded && this.state.searchResults) {
       return (
         <div>
           <TopSearchBar
             searchInput={this.state.searchInput}
             autoCompleteList={this.props.autoCompleteList}
             searchResults={this.state.searchResults}
-            updateSearchResults={this.updateSearchResults}
+            // updateSearchResults={this.updateSearchResults}
           />
-          <br/><br/>
-          {this.state.searchResults && this.state.searchResults.length!==0 && <DataOutput searchResults={this.state.searchResults} />}
-          {this.state.searchResults && this.state.searchResults.length===0 && <h1 id="no-result-title">No result found.</h1>}
+
         </div>
       );
     } else {

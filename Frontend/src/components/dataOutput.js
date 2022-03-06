@@ -10,12 +10,12 @@ export default class DataOutput extends Component {
 
   render() {
     const resultList = [];
-    console.log(this.state.searchResults);
+    // console.log(this.state.searchResults);
 
     if (this.state.searchResults){
       this.state.searchResults.forEach((data) => {
         resultList.push(
-        <div className="card result-card">
+        <div key={data.title} className="card result-card">
           <div className="card-body">
             <a href={data.url} target="_blank">{data.url}</a>
             <h1 className='data-title'>{data.title}</h1>
