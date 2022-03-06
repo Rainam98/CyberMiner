@@ -2,13 +2,21 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 import DataRetrival
 import json
-app = Flask(__name__)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+
+app = Flask(__name__, static_folder='./build', static_url_path='/')
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 # @app.route('/', methods=['GET', 'POST'])
 # def index(): 
 #     return render_template('index.html')
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 @app.route('/searchWord', methods=['POST'])
 @cross_origin()
