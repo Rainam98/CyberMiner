@@ -1,4 +1,3 @@
-import logo from "./logo.png";
 import "./App.css";
 import SearchBar from "./components/searchBar";
 

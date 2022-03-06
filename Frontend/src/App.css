@@ -108,3 +108,12 @@
     width: 100%;
     height: 75px;
 }
+
+#no-result-title {
+    text-align: start;
+}
+
+.result-card {
+    display: inline;
+    text-align: start;
+}
