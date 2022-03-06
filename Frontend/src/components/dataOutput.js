@@ -17,7 +17,7 @@ export default class DataOutput extends Component {
         resultList.push(
         <div className="card result-card">
           <div className="card-body">
-            <a href={data.url}>{data.url}</a>
+            <a href={data.url} target="_blank">{data.url}</a>
             <h1 className='data-title'>{data.title}</h1>
             <p>{data.description}</p>
           </div>
