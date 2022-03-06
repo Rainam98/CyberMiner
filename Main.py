@@ -23,9 +23,11 @@ def searchWord():
         for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
             if words.lower() in title.lower() or words.lower() in allColumnsDict[title][0].lower() or words.lower() in allColumnsDict[title][1].lower():
-                urlDescDict['title'] = title
+                title1 = title.replace('Â', '').replace('\xa0', ' ')
+                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
+                urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
-                urlDescDict['description'] = allColumnsDict[title][1]
+                urlDescDict['Description'] = desc
                 allData.append(urlDescDict)
         # print(allData)
         return jsonify({'result': allData})
