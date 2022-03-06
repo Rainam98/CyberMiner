@@ -27,7 +27,7 @@ def searchWord():
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
-                urlDescDict['Description'] = desc
+                urlDescDict['description'] = desc
                 allData.append(urlDescDict)
         # print(allData)
         return jsonify({'result': allData})
