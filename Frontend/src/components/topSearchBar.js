@@ -2,13 +2,14 @@ import logo from "../logo_small.png";
 import React, { Component } from "react";
 import "./topSearchBar.css";
 import Axios from "axios";
+import DataOutput from "./dataOutput";
 
 export default class TopSearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchInput: props.searchInput,
-      searchResults: null,
+      searchResults: props.searchResults,
       loadAutoCompleteList: false,
       loading: false
     };
@@ -31,7 +32,7 @@ export default class TopSearchBar extends Component {
       },
       url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
     }).then((res) => {
-      this.updateSearchResults(res.data["result"]) 
+      // this.updateSearchResults(res.data["result"]) 
       this.setState({ 
         searchResults: res.data["result"], 
         loading: false 
@@ -39,9 +40,9 @@ export default class TopSearchBar extends Component {
     });
   };
 
-  updateSearchResults=(newResults)=> {
-    this.props.updateSearchResults(newResults);
-}
+//   updateSearchResults=(newResults)=> {
+//     this.props.updateSearchResults(newResults);
+// }
 
 
   onLoadSuggestion = (suggestion) => {
@@ -57,29 +58,34 @@ export default class TopSearchBar extends Component {
     // );
 
     return (
-      <div id="toolbar" className="toolbar ui-widget-content">
-        <img className="logo-image-small" src={logo} alt="logo" />
-        <div className="horizontal">
-          <input
-            type="text"
-            id="inputToolbar"
-            value={this.state.searchInput}
-            onChange={this.onChangeInput}
-          />
-          <button id="readInputToolbar" onClick={this.onSearch}>Search</button>
+      <div>
+        <div id="toolbar" className="toolbar ui-widget-content">
+          <img className="logo-image-small" src={logo} alt="logo" />
+          <div className="horizontal">
+            <input
+              type="text"
+              id="inputToolbar"
+              value={this.state.searchInput}
+              onChange={this.onChangeInput}
+            />
+            <button id="readInputToolbar" onClick={this.onSearch}>Search</button>
+          </div>
+          
+          {/* {this.state.loadAutoCompleteList && (
+            <ul className="auto-complete-list">
+              {filteredList.map((each) => (
+                <AutoCompleteItem
+                  key={each.id}
+                  suggestion={each.suggestion}
+                  onLoadSuggestion={this.onLoadSuggestion}
+                />
+              ))}
+            </ul>
+          )} */}
         </div>
-        
-        {/* {this.state.loadAutoCompleteList && (
-          <ul className="auto-complete-list">
-            {filteredList.map((each) => (
-              <AutoCompleteItem
-                key={each.id}
-                suggestion={each.suggestion}
-                onLoadSuggestion={this.onLoadSuggestion}
-              />
-            ))}
-          </ul>
-        )} */}
+        <br/><br/>
+        {!this.state.loading && this.state.searchResults && this.state.searchResults.length!==0 && <DataOutput searchResults={this.state.searchResults} />}
+        {this.state.searchResults && this.state.searchResults.length===0 && <h1 id="no-result-title">No result found.</h1>}      
       </div>
     );
   }
