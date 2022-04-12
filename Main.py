@@ -3,7 +3,6 @@ from flask_cors import CORS, cross_origin
 import DataRetrival
 import json
 
-
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
