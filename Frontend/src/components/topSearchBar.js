@@ -22,22 +22,26 @@ export default class TopSearchBar extends Component {
   };
 
   onSearch = () => {
-    this.setState({
-      loading: true
-    });
-    Axios({
-      method: "POST",
-      data: {
-        searchInput: this.state.searchInput,
-      },
-      url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
-    }).then((res) => {
-      // this.updateSearchResults(res.data["result"]) 
-      this.setState({ 
-        searchResults: res.data["result"], 
-        loading: false 
+    if(this.state.searchInput == ''){
+      alert("Please enter something to search")
+    }else{
+      this.setState({
+        loading: true
       });
-    });
+      Axios({
+        method: "POST",
+        data: {
+          searchInput: this.state.searchInput,
+        },
+        url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+      }).then((res) => {
+        // this.updateSearchResults(res.data["result"]) 
+        this.setState({ 
+          searchResults: res.data["result"], 
+          loading: false 
+        });
+      });
+    }
   };
 
 //   updateSearchResults=(newResults)=> {
@@ -61,14 +65,30 @@ export default class TopSearchBar extends Component {
       <div>
         <div id="toolbar" className="toolbar ui-widget-content">
           <img className="logo-image-small" src={logo} alt="logo" />
-          <div className="horizontal">
-            <input
-              type="text"
-              id="inputToolbar"
-              value={this.state.searchInput}
-              onChange={this.onChangeInput}
-            />
-            <button id="readInputToolbar" onClick={this.onSearch}>Search</button>
+          
+          <div className="search-bar-container">
+            <div className="search-bar-suggestion-container">
+            <div className="input-group">
+                <input
+                  className="form-control"
+                  type="search"
+                  placeholder="Enter Search Query here!!"
+                  value={this.state.searchInput}
+                  onChange={this.onChangeInput}
+                  id="inputToolbar"
+                />
+                <div className="input-group-append">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={this.onSearch}
+                    id="readInputToolbar"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* {this.state.loadAutoCompleteList && (
