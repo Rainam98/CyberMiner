@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
-import DataRetrival
 import json
 
 from flask_mysqldb import MySQL
@@ -15,18 +14,14 @@ mysql = MySQL(app)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# @app.route('/', methods=['GET', 'POST'])
-# def index(): 
-#     return render_template('index.html')
-
 @app.route('/searchWord', methods=['POST'])
 @cross_origin()
 def searchWord(): 
     if request.method == 'POST':
         posted_data = request.get_json()
         # print(posted_data)
-        words = posted_data['searchInput']        #Fetch the data from request payload
-        allColumnsDict = getData()  # All columns dict retrival from DataRetrival.py
+        words = posted_data['searchInput']        # Fetch the data from request payload
+        allColumnsDict = getData()                # All columns dict retrival from getData()  
         allData = list()
         
         for title in allColumnsDict:
@@ -43,7 +38,7 @@ def searchWord():
 
 def getData():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM cdata")
+    cur.execute("SELECT * FROM cyberminer_db.data")
     fdata = cur.fetchall()
     cur.close()
     res = dict()
@@ -51,20 +46,21 @@ def getData():
         res[data[0]] = [data[1], data[2]]
     return res
 
-@app.route('/autocomplete', methods=['POST'])
-def Home():
+@app.route('/autoComplete', methods=['POST'])
+@cross_origin()
+def loadAutoComplete():
     if request.method == 'POST':
-        res = list()
-        words = str(request.form['auto_search_box'].strip())#Fetch the data from auto search box
-        words = words.lower()
-        keys1 = getData().keys()
-        for key in keys1:
-            key = key.lower()
-            if key.startswith(words):
-                res.append(key)
-        if res == []:
-            res.append('NO KEY..............')
-    return render_template('Results.html', data=res)
+        posted_data = request.get_json()
+        # print(posted_data)
+        words = posted_data['autoCompleteKey'] 
+        allData = list()
+        for key in getData().keys():
+            if key.lower().startswith(words.lower()):
+                key1 = key.replace('Â', '').replace('\xa0', ' ')
+                allData.append(key1)
+        if allData == []:
+            allData.append('NO KEY..............')
+    return jsonify({'autoCompleteList': allData})
 
 if __name__ == '__main__':
    app.run(debug=True)

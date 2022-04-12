@@ -12,8 +12,8 @@ export default class SearchBar extends Component {
       searchInput: "",
       searchResults: null,
       loadAutoCompleteList: false,
+      autoCompleteResults: null,
       loadTopSearchBar: false,
-      urls: [],
       loading: false
     };
   }
@@ -22,11 +22,29 @@ export default class SearchBar extends Component {
     this.setState({
       searchInput: event.target.value,
       loadAutoCompleteList: true,
+      // loading: true 
+    });
+    Axios({
+      method: "POST",
+      data: {
+        autoCompleteKey: event.target.value,
+      },
+      url: "http://localhost:5000/autoComplete"
+    }).then((res) => {
+      let autoCompleteList = [];
+      for (var i=1; i<=res.data["autoCompleteList"].length; i++){
+        autoCompleteList.push({ id: i, suggestion: res.data["autoCompleteList"][i-1] })
+      }
+      this.setState({ 
+        autoCompleteResults: autoCompleteList, 
+        // loadAutoCompleteList: false,
+        // loading: false 
+      });
     });
   };
 
   onSearch = () => {
-    if(this.state.searchInput == ''){
+    if(this.state.searchInput === ''){
       alert("Please enter something to search")
     }else{
       this.setState({
@@ -43,7 +61,8 @@ export default class SearchBar extends Component {
         // console.log(res.data["result"]);
         this.setState({ 
           searchResults: res.data["result"], 
-          loading: false 
+          loading: false,
+          loadAutoCompleteList: false,
         });
       });
     }
@@ -58,11 +77,6 @@ export default class SearchBar extends Component {
   };
 
   render() {
-    const filteredList = this.props.autoCompleteList.filter((option) =>
-      option.suggestion
-        .toUpperCase()
-        .includes(this.state.searchInput.toUpperCase())
-    );
     const isTopSearchBarLoaded = this.state.loadTopSearchBar;
     if (isTopSearchBarLoaded && this.state.searchResults) {
       return (
@@ -103,9 +117,9 @@ export default class SearchBar extends Component {
                 </div>
                 {/* <DataOutput/>	 */}
               </div>
-              {/* {this.state.loadAutoCompleteList && (	
+              {this.state.loadAutoCompleteList && this.state.autoCompleteResults && (	
                 <ul className="auto-complete-list">	
-                  {filteredList.map((each) => (	
+                  {this.state.autoCompleteResults.map((each) => (	
                     <AutoCompleteItem	
                       key={each.id}	
                       suggestion={each.suggestion}	
@@ -113,7 +127,7 @@ export default class SearchBar extends Component {
                     />	
                   ))}	
                 </ul>	
-              )}	 */}
+              )}	
             </div>
           </div>
         </div>
