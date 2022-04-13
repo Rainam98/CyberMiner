@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "./topSearchBar.css";
 import Axios from "axios";
 import DataOutput from "./dataOutput";
+import AutoCompleteItem from "./autoCompleteItem";
 
 export default class TopSearchBar extends Component {
   constructor(props) {
@@ -11,18 +12,38 @@ export default class TopSearchBar extends Component {
       searchInput: props.searchInput,
       searchResults: props.searchResults,
       loadAutoCompleteList: false,
+      autoCompleteResults: null,
       loading: false
     };
   }
 
   onChangeInput = (event) => {
     this.setState({
-      searchInput: event.target.value
+      searchInput: event.target.value,
+      loadAutoCompleteList: true,
+      loading: true 
+    });
+    Axios({
+      method: "POST",
+      data: {
+        autoCompleteKey: event.target.value,
+      },
+      url: "http://localhost:5000/autoComplete"
+    }).then((res) => {
+      let autoCompleteList = [];
+      for (var i=1; i<=res.data["autoCompleteList"].length; i++){
+        autoCompleteList.push({ id: i, suggestion: res.data["autoCompleteList"][i-1] })
+      }
+      this.setState({ 
+        autoCompleteResults: autoCompleteList, 
+        // loadAutoCompleteList: false,
+        loading: false 
+      });
     });
   };
 
   onSearch = () => {
-    if(this.state.searchInput == ''){
+    if(this.state.searchInput === ''){
       alert("Please enter something to search")
     }else{
       this.setState({
@@ -38,7 +59,8 @@ export default class TopSearchBar extends Component {
         // this.updateSearchResults(res.data["result"]) 
         this.setState({ 
           searchResults: res.data["result"], 
-          loading: false 
+          loading: false ,
+          loadAutoCompleteList: false,
         });
       });
     }
@@ -54,13 +76,6 @@ export default class TopSearchBar extends Component {
   };
 
   render() {
-    // console.log(this.props.autoCompleteList);
-    // const filteredList = this.props.autoCompleteList.filter((option) =>
-    //   option.suggestion
-    //     .toUpperCase()
-    //     .includes(this.state.searchInput.toUpperCase())
-    // );
-
     return (
       <div>
         <div id="toolbar" className="toolbar ui-widget-content">
@@ -91,17 +106,17 @@ export default class TopSearchBar extends Component {
             </div>
           </div>
           
-          {/* {this.state.loadAutoCompleteList && (
-            <ul className="auto-complete-list">
-              {filteredList.map((each) => (
-                <AutoCompleteItem
-                  key={each.id}
-                  suggestion={each.suggestion}
-                  onLoadSuggestion={this.onLoadSuggestion}
-                />
-              ))}
-            </ul>
-          )} */}
+          {this.state.loadAutoCompleteList && this.state.autoCompleteResults && (	
+                <ul className="auto-complete-list">	
+                  {this.state.autoCompleteResults.map((each) => (	
+                    <AutoCompleteItem	
+                      key={each.id}	
+                      suggestion={each.suggestion}	
+                      onLoadSuggestion={this.onLoadSuggestion}	
+                    />	
+                  ))}	
+                </ul>	
+              )}	
         </div>
         <br/><br/>
         {!this.state.loading && this.state.searchResults && this.state.searchResults.length!==0 && <DataOutput searchResults={this.state.searchResults} />}
