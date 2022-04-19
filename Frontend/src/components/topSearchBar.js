@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "./topSearchBar.css";
 import Axios from "axios";
 import DataOutput from "./dataOutput";
+import AutoCompleteItem from "./autoCompleteItem";
 
 export default class TopSearchBar extends Component {
   constructor(props) {
@@ -11,33 +12,58 @@ export default class TopSearchBar extends Component {
       searchInput: props.searchInput,
       searchResults: props.searchResults,
       loadAutoCompleteList: false,
+      autoCompleteResults: null,
       loading: false
     };
   }
 
   onChangeInput = (event) => {
     this.setState({
-      searchInput: event.target.value
-    });
-  };
-
-  onSearch = () => {
-    this.setState({
-      loading: true
+      searchInput: event.target.value,
+      loadAutoCompleteList: true,
+      loading: true 
     });
     Axios({
       method: "POST",
       data: {
-        searchInput: this.state.searchInput,
+        autoCompleteKey: event.target.value,
       },
-      url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+      url: "http://localhost:5000/autoComplete"
     }).then((res) => {
-      // this.updateSearchResults(res.data["result"]) 
+      let autoCompleteList = [];
+      for (var i=1; i<=res.data["autoCompleteList"].length; i++){
+        autoCompleteList.push({ id: i, suggestion: res.data["autoCompleteList"][i-1] })
+      }
       this.setState({ 
-        searchResults: res.data["result"], 
+        autoCompleteResults: autoCompleteList, 
+        // loadAutoCompleteList: false,
         loading: false 
       });
     });
+  };
+
+  onSearch = () => {
+    if(this.state.searchInput === ''){
+      alert("Please enter something to search")
+    }else{
+      this.setState({
+        loading: true
+      });
+      Axios({
+        method: "POST",
+        data: {
+          searchInput: this.state.searchInput,
+        },
+        url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+      }).then((res) => {
+        // this.updateSearchResults(res.data["result"]) 
+        this.setState({ 
+          searchResults: res.data["result"], 
+          loading: false ,
+          loadAutoCompleteList: false,
+        });
+      });
+    }
   };
 
 //   updateSearchResults=(newResults)=> {
@@ -50,38 +76,47 @@ export default class TopSearchBar extends Component {
   };
 
   render() {
-    // console.log(this.props.autoCompleteList);
-    // const filteredList = this.props.autoCompleteList.filter((option) =>
-    //   option.suggestion
-    //     .toUpperCase()
-    //     .includes(this.state.searchInput.toUpperCase())
-    // );
-
     return (
       <div>
         <div id="toolbar" className="toolbar ui-widget-content">
           <img className="logo-image-small" src={logo} alt="logo" />
-          <div className="horizontal">
-            <input
-              type="text"
-              id="inputToolbar"
-              value={this.state.searchInput}
-              onChange={this.onChangeInput}
-            />
-            <button id="readInputToolbar" onClick={this.onSearch}>Search</button>
+          
+          <div className="search-bar-container">
+            <div className="search-bar-suggestion-container">
+            <div className="input-group">
+                <input
+                  className="form-control"
+                  type="search"
+                  placeholder="Enter Search Query here!!"
+                  value={this.state.searchInput}
+                  onChange={this.onChangeInput}
+                  id="inputToolbar"
+                />
+                <div className="input-group-append">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={this.onSearch}
+                    id="readInputToolbar"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           
-          {/* {this.state.loadAutoCompleteList && (
-            <ul className="auto-complete-list">
-              {filteredList.map((each) => (
-                <AutoCompleteItem
-                  key={each.id}
-                  suggestion={each.suggestion}
-                  onLoadSuggestion={this.onLoadSuggestion}
-                />
-              ))}
-            </ul>
-          )} */}
+          {this.state.loadAutoCompleteList && this.state.autoCompleteResults && (	
+                <ul className="auto-complete-list">	
+                  {this.state.autoCompleteResults.map((each) => (	
+                    <AutoCompleteItem	
+                      key={each.id}	
+                      suggestion={each.suggestion}	
+                      onLoadSuggestion={this.onLoadSuggestion}	
+                    />	
+                  ))}	
+                </ul>	
+              )}	
         </div>
         <br/><br/>
         {!this.state.loading && this.state.searchResults && this.state.searchResults.length!==0 && <DataOutput searchResults={this.state.searchResults} />}

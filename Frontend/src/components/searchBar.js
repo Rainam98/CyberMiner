@@ -12,8 +12,8 @@ export default class SearchBar extends Component {
       searchInput: "",
       searchResults: null,
       loadAutoCompleteList: false,
+      autoCompleteResults: null,
       loadTopSearchBar: false,
-      urls: [],
       loading: false
     };
   }
@@ -22,27 +22,50 @@ export default class SearchBar extends Component {
     this.setState({
       searchInput: event.target.value,
       loadAutoCompleteList: true,
-    });
-  };
-
-  onSearch = () => {
-    this.setState({
-      loadTopSearchBar: true,
-      loading: true
+      // loading: true 
     });
     Axios({
       method: "POST",
       data: {
-        searchInput: this.state.searchInput,
+        autoCompleteKey: event.target.value,
       },
-      url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+      url: "http://localhost:5000/autoComplete"
     }).then((res) => {
-      // console.log(res.data["result"]);
+      let autoCompleteList = [];
+      for (var i=1; i<=res.data["autoCompleteList"].length; i++){
+        autoCompleteList.push({ id: i, suggestion: res.data["autoCompleteList"][i-1] })
+      }
       this.setState({ 
-        searchResults: res.data["result"], 
-        loading: false 
+        autoCompleteResults: autoCompleteList, 
+        // loadAutoCompleteList: false,
+        // loading: false 
       });
     });
+  };
+
+  onSearch = () => {
+    if(this.state.searchInput === ''){
+      alert("Please enter something to search")
+    }else{
+      this.setState({
+        loadTopSearchBar: true,
+        loading: true
+      });
+      Axios({
+        method: "POST",
+        data: {
+          searchInput: this.state.searchInput,
+        },
+        url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+      }).then((res) => {
+        // console.log(res.data["result"]);
+        this.setState({ 
+          searchResults: res.data["result"], 
+          loading: false,
+          loadAutoCompleteList: false,
+        });
+      });
+    }
   };
 
   // updateSearchResults = (newSearchResults) => {
@@ -54,11 +77,6 @@ export default class SearchBar extends Component {
   };
 
   render() {
-    const filteredList = this.props.autoCompleteList.filter((option) =>
-      option.suggestion
-        .toUpperCase()
-        .includes(this.state.searchInput.toUpperCase())
-    );
     const isTopSearchBarLoaded = this.state.loadTopSearchBar;
     if (isTopSearchBarLoaded && this.state.searchResults) {
       return (
@@ -80,25 +98,28 @@ export default class SearchBar extends Component {
           </div>
           <div className="search-bar-container">
             <div className="search-bar-suggestion-container">
-              <div className="input-container">
+              <div className="input-group">
                 <input
-                  className="search-input"
+                  className="form-control"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Enter Search Query here!!"
                   value={this.state.searchInput}
                   onChange={this.onChangeInput}
                 />
-                <button
-                  className="search-btn btn btn-outline-secondary"
-                  onClick={this.onSearch}
-                >
-                  Search
-                </button>
+                <div className="input-group-append">
+                  <button
+                  type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={this.onSearch}
+                  >
+                    Search
+                  </button>
+                </div>
                 {/* <DataOutput/>	 */}
               </div>
-              {/* {this.state.loadAutoCompleteList && (	
+              {this.state.loadAutoCompleteList && this.state.autoCompleteResults && (	
                 <ul className="auto-complete-list">	
-                  {filteredList.map((each) => (	
+                  {this.state.autoCompleteResults.map((each) => (	
                     <AutoCompleteItem	
                       key={each.id}	
                       suggestion={each.suggestion}	
@@ -106,7 +127,7 @@ export default class SearchBar extends Component {
                     />	
                   ))}	
                 </ul>	
-              )}	 */}
+              )}	
             </div>
           </div>
         </div>
