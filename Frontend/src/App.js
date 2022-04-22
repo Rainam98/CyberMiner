@@ -1,14 +1,11 @@
 import "./App.css";
 import SearchBar from "./components/searchBar";
-import React, { useState } from "react";
+import React from "react";
 import UrlDataTable from "./components/UrlDataTable";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 function App() {
-
-
   return (
-
     <Router >
       <Route exact path='/' render={props => (
         <div className="App">
@@ -25,9 +22,6 @@ function App() {
     </Router>
 
   );
-
-
-
 }
 
 export default App;
