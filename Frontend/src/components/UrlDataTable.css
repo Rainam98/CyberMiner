@@ -1,11 +1,18 @@
-.shiftLeft{
+.shiftLeft {
     float: left;
     margin-left: 30px;
     margin-top: 30px;
     padding-bottom: 30px;
 }
 
-.datatable{
+.shiftRight {
+    float: right;
+    margin-left: 30px;
+    margin-top: 30px;
+    padding-bottom: 30px;
+}
+
+.datatable {
     margin-left: 30px;
     margin-right: 30px;
 }
