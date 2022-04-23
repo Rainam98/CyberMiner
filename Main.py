@@ -82,13 +82,13 @@ def searchAnd(word1, word2):
     allColumnsDict = getData()
     searchedData = list()
     for title in allColumnsDict:
-            urlDescDict = {'title':[], 'url':[], 'Description':[]}
+            urlDescDict = {'title':[], 'url':[], 'description':[]}
             if (word1.lower() in allColumnsDict[title][1].lower() and word2.lower() in allColumnsDict[title][1].lower()):
                 title1 = title.replace('Â', '').replace('\xa0', ' ')
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
-                urlDescDict['Description'] = desc
+                urlDescDict['description'] = desc
                 searchedData.append(urlDescDict)
     return searchedData
 # either word1 and word2 are present in desc
@@ -96,13 +96,13 @@ def searchOr(word1, word2):
     allColumnsDict = getData()
     searchedData = list()
     for title in allColumnsDict:
-            urlDescDict = {'title':[], 'url':[], 'Description':[]}
+            urlDescDict = {'title':[], 'url':[], 'description':[]}
             if word1.lower() in allColumnsDict[title][1].lower() or word2.lower() in allColumnsDict[title][1].lower():
                 title1 = title.replace('Â', '').replace('\xa0', ' ')
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
-                urlDescDict['Description'] = desc
+                urlDescDict['description'] = desc
                 searchedData.append(urlDescDict)
     return searchedData
 #  word1 but not word2 are present in desc
@@ -110,13 +110,13 @@ def searchNot(word1, word2):
     allColumnsDict = getData()
     searchedData = list()
     for title in allColumnsDict:
-            urlDescDict = {'title':[], 'url':[], 'Description':[]}
+            urlDescDict = {'title':[], 'url':[], 'description':[]}
             if word1.lower() in allColumnsDict[title][1].lower() and (not(word2.lower() in allColumnsDict[title][1].lower())):
                 title1 = title.replace('Â', '').replace('\xa0', ' ')
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
-                urlDescDict['Description'] = desc
+                urlDescDict['description'] = desc
                 searchedData.append(urlDescDict)
     return searchedData
 
