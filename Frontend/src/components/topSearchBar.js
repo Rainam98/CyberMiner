@@ -49,12 +49,19 @@ export default class TopSearchBar extends Component {
       this.setState({
         loading: true
       });
+
+      let inputKey = this.state.searchInput.split(" ");
+      let urlForSearch = "http://localhost:5000/searchWord"; // Port 5000 is the default port for Python Flask app	
+      if (inputKey.includes("AND") || inputKey.includes("OR") || inputKey.includes("")){
+        urlForSearch = "http://localhost:5000/binarySearch"
+      }
+
       Axios({
         method: "POST",
         data: {
           searchInput: this.state.searchInput,
         },
-        url: "http://localhost:5000/searchWord", // Port 5000 is the default port for Python Flask app	
+        url:urlForSearch
       }).then((res) => {
         // this.updateSearchResults(res.data["result"]) 
         this.setState({ 
