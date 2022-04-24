@@ -111,7 +111,7 @@ def searchNot(word1, word2):
     searchedData = list()
     for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
-            if word1.lower() in allColumnsDict[title][1].lower() and (not(word2.lower() in allColumnsDict[title][1].lower())):
+            if word1.lower() in allColumnsDict[title][1].lower() and ((allColumnsDict[title][1].lower()).find(word2) == -1):
                 title1 = title.replace('Â', '').replace('\xa0', ' ')
                 desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
                 urlDescDict['title'] = title1
