@@ -52,7 +52,7 @@ export default class TopSearchBar extends Component {
 
       let inputKey = this.state.searchInput.split(" ");
       let urlForSearch = "http://localhost:5000/searchWord"; // Port 5000 is the default port for Python Flask app	
-      if (inputKey.includes("AND") || inputKey.includes("OR") || inputKey.includes("")){
+      if (inputKey.includes("AND") || inputKey.includes("OR") || inputKey.includes("NOT")){
         urlForSearch = "http://localhost:5000/binarySearch"
       }
 

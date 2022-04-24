@@ -29,3 +29,12 @@
   width: 100%;
   text-align: center;
 }
+
+.auto-complete-list > li {
+  border-bottom: 1px solid lightgray;
+  border-image: none;
+  padding: 10px;
+  list-style-type: none;
+  z-index: 2;
+  width: 80%;
+}
