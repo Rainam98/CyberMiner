@@ -106,8 +106,12 @@ export default class UrlDataTable extends Component {
                             </div>
                             <div className="buttons">
                             <button className='btn btn-success delete-modal-button' onClick={() => {
-                                this.addRecord()
-                                onClose()
+                                if(this.state.url && this.state.title && this.state.description){
+                                    this.addRecord()
+                                    onClose()
+                                }else{
+                                    alert("Please enter all data")
+                                }
                             }}>Add</button>
                             <button className='btn btn-danger delete-modal-button' onClick={onClose}>Close</button>
                             </div>
