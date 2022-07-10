@@ -16,8 +16,11 @@ export default class UrlDataTable extends Component {
         }
     }
 
+    
+
     componentDidMount() {
         this.loadAllRecords()
+       
     }
 
     loadAllRecords = ()=>{
@@ -89,22 +92,29 @@ export default class UrlDataTable extends Component {
                 customUI: ({ onClose }) => {
                     return (
                         <div className='custom-ui'>
+                            <div className="form-group">
                             <h1>Add New Record</h1>
-                            <div className="information">
+                            
                                 <label>Title:</label>
-                                <input type="text" onChange={(event)=>{this.setState({title:event.target.value})}}/>
+                                <input type="text" className="form-control" onChange={(event)=>{this.setState({title:event.target.value})}}/>
                                 
                                 <label>Url:</label>
-                                <input type="text" onChange={(event)=>{this.setState({url:event.target.value})}}/>
+                                <input type="text" className="form-control" onChange={(event)=>{this.setState({url:event.target.value})}}/>
                                 
                                 <label>Description:</label>
-                                <input type="text" onChange={(event)=>{this.setState({description:event.target.value})}}/>
+                                <textarea rows="3" className="form-control" onChange={(event)=>{this.setState({description:event.target.value})}}/>
                             </div>
-                            <button className='delete-modal-button' onClick={() => {
-                                this.addRecord()
-                                onClose()
+                            <div className="buttons">
+                            <button className='btn btn-success delete-modal-button' onClick={() => {
+                                if(this.state.url && this.state.title && this.state.description){
+                                    this.addRecord()
+                                    onClose()
+                                }else{
+                                    alert("Please enter all data")
+                                }
                             }}>Add</button>
-                            <button className='delete-modal-button' onClick={onClose}>Close</button>
+                            <button className='btn btn-danger delete-modal-button' onClick={onClose}>Close</button>
+                            </div>
                         </div>
                     )
                 }
@@ -117,24 +127,29 @@ export default class UrlDataTable extends Component {
                 customUI: ({ onClose }) => {
                     return (
                         <div className='custom-ui'>
+                            <div className="form-group">
                             <h1>Update Record</h1>
                             <div className="information">
+                                
                                 <label>Title:</label>
-                                <input type="text" value={record.title} disabled/>
+                                <input type="text" className="form-control" value={record.title} disabled/>
 
                                 <label>Url:</label>
-                                <input type="text" value={record.url} disabled/>
+                                <input type="text" className="form-control" value={record.url} disabled/>
 
                                 <label>Description:</label>
-                                <input type="text" defaultValue={record.description} onChange={(event)=>{
+                                <textarea rows="3" className="form-control" defaultValue={record.description} onChange={(event)=>{
                                     this.setState({description:event.target.value})
                                 }}/>
                             </div>
-                            <button className='delete-modal-button' onClick={() => {
+                            <div className="buttons">
+                            <button className='btn btn-success delete-modal-button' onClick={() => {
                                 this.updateRecord()
                                 onClose()
                             }}>Update</button>
-                            <button className='delete-modal-button' onClick={onClose}>Close</button>
+                            <button className='btn btn-danger delete-modal-button' onClick={onClose}>Close</button>
+                            </div>
+                        </div>
                         </div>
                     )
                 }
@@ -147,13 +162,15 @@ export default class UrlDataTable extends Component {
                 customUI: ({ onClose }) => {
                     return (
                         <div className='custom-ui'>
-                            <h1>Delete Record</h1>
+                            <h1>Delete {record.title}</h1>
                             <p>Are you sure to delete this record?</p>
-                            <button className='delete-modal-button' onClick={() => {
+                            <div className="buttons">
+                            <button className='btn btn-success delete-modal-button' onClick={() => {
                                 this.deleteRecord()
                                 onClose()
                             }}>Yes</button>
-                            <button className='delete-modal-button' onClick={onClose}>No</button>
+                            <button className='btn btn-danger delete-modal-button' onClick={onClose}>No</button>
+                            </div>
                         </div>
                     )
                 }
@@ -171,7 +188,7 @@ export default class UrlDataTable extends Component {
                 <div className="shiftRight">
                     <button className="btn btn-primary" onClick={()=>this.loadConfirmAlert("add", null)}>Add New Record</button>
                 </div>
-
+                
                 <div className="datatable">
                     <table className="table table-striped">
                         <thead>
@@ -186,13 +203,13 @@ export default class UrlDataTable extends Component {
                             {this.state.data && this.state.data.map((details) => (
                                 <tr>
                                 <td>{details.title}</td>
-                                <td>{details.url}</td>
+                                <td><a href={details.url} target="_blank">{details.url}</a></td>
                                 <td>{details.description}</td>
                                 <td>
-                                    <div className="btn-grp">
-                                        <button className="btn btn-warning" onClick={()=>this.loadConfirmAlert("update", details)}>Update</button>
-                                        <button className="btn btn-danger" onClick={()=>this.loadConfirmAlert("delete", details)}>Delete</button>
-                                    </div>
+                                    
+                                        <button type="button" className="btn btn-warning table-button" onClick={()=>this.loadConfirmAlert("update", details)}>Update</button>
+                                        <button type="button" className="btn btn-danger table-button" onClick={()=>this.loadConfirmAlert("delete", details)}>Delete</button>
+                                    
                                 </td>
                             </tr>
                             ))}

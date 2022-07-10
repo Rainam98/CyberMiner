@@ -15,13 +15,13 @@ export default class AutoCompleteItem extends Component {
   render() {
     return (
       /*<li className="suggestion-item" > */
-      <p
+      <li 
         className="suggestion-name"
         style={{ textAlign: "left" }}
         onClick={this.onClickFullSuggestion}
       >
         {this.props.suggestion}
-      </p>
+      </li>
       /*{ <img
         className="arrow-image"
         src="https://assets.ccbp.in/frontend/react-js/diagonal-arrow-left-up.png"

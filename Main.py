@@ -7,7 +7,7 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Poojitha@123'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'cyberminer_db'
 
 mysql = MySQL(app)
@@ -27,8 +27,8 @@ def searchWord():
         for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
             if words.lower() in title.lower() or words.lower() in allColumnsDict[title][0].lower() or words.lower() in allColumnsDict[title][1].lower():
-                title1 = title.replace('Â', '').replace('\xa0', ' ')
-                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
+                title1 = title.replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
+                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
                 urlDescDict['description'] = desc
@@ -56,10 +56,10 @@ def loadAutoComplete():
         allData = list()
         for key in getData().keys():
             if key.lower().startswith(words.lower()):
-                key1 = key.replace('Â', '').replace('\xa0', ' ')
+                key1 = key.replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
                 allData.append(key1)
         if allData == []:
-            allData.append('NO KEY..............')
+            allData.append('')
     return jsonify({'autoCompleteList': allData})
 
 # the keywords are only searched in the description
@@ -84,8 +84,8 @@ def searchAnd(word1, word2):
     for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
             if (word1.lower() in allColumnsDict[title][1].lower() and word2.lower() in allColumnsDict[title][1].lower()):
-                title1 = title.replace('Â', '').replace('\xa0', ' ')
-                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
+                title1 = title.replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
+                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
                 urlDescDict['description'] = desc
@@ -98,8 +98,8 @@ def searchOr(word1, word2):
     for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
             if word1.lower() in allColumnsDict[title][1].lower() or word2.lower() in allColumnsDict[title][1].lower():
-                title1 = title.replace('Â', '').replace('\xa0', ' ')
-                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
+                title1 = title.replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
+                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
                 urlDescDict['description'] = desc
@@ -112,8 +112,8 @@ def searchNot(word1, word2):
     for title in allColumnsDict:
             urlDescDict = {'title':[], 'url':[], 'description':[]}
             if word1.lower() in allColumnsDict[title][1].lower() and ((allColumnsDict[title][1].lower()).find(word2) == -1):
-                title1 = title.replace('Â', '').replace('\xa0', ' ')
-                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ')
+                title1 = title.replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
+                desc = allColumnsDict[title][1].replace('Â', '').replace('\xa0', ' ').replace('ï¿½',' ')
                 urlDescDict['title'] = title1
                 urlDescDict['url']= allColumnsDict[title][0]
                 urlDescDict['description'] = desc
